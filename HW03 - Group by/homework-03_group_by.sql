@@ -31,10 +31,10 @@ USE WideWorldImporters
 */
 --- 1 вариант
 SELECT 
-YEAR(inv.InvoiceDate) as 'Год продажи',
-MONTH(inv.InvoiceDate) as 'Месяц продажи',
-AVG(invl.UnitPrice) as 'Средняя цена',
-SUM(invl.UnitPrice*invl.Quantity) as 'Общая сумма'
+YEAR(inv.InvoiceDate) as 'YEAR',
+MONTH(inv.InvoiceDate) as 'MONTH',
+AVG(invl.UnitPrice) as 'AVG',
+SUM(invl.UnitPrice*invl.Quantity) as 'Total amount'
 FROM Sales.Invoices inv
 INNER JOIN Sales.InvoiceLines invl ON invl.InvoiceID=inv.InvoiceID
 GROUP BY YEAR(inv.InvoiceDate),MONTH(inv.InvoiceDate)
@@ -45,14 +45,14 @@ SELECT
 	CASE(GROUPING(YEAR(inv.InvoiceDate)))
 	WHEN 1 THEN CAST('TotalAll' as NCHAR(20))
 	ELSE CAST(YEAR(inv.InvoiceDate) as NCHAR(20))
-	END as 'Год продажи',
+	END as 'YEAR',
 
 	CASE(GROUPING(MONTH(inv.InvoiceDate)))
 	WHEN 1 THEN CAST('Total' as NCHAR(20))
 	ELSE CAST(MONTH(inv.InvoiceDate) as NCHAR(20))
-	END as 'Месяц продажи',
-AVG(invl.UnitPrice) as 'Средняя цена',
-SUM(invl.UnitPrice*invl.Quantity) as 'Общая сумма'
+	END as 'MONTH',
+AVG(invl.UnitPrice) as 'AVG',
+SUM(invl.UnitPrice*invl.Quantity) as 'Total amount'
 FROM Sales.Invoices inv
 INNER JOIN Sales.InvoiceLines invl ON invl.InvoiceID=inv.InvoiceID
 GROUP BY ROLLUP (YEAR(inv.InvoiceDate),MONTH(inv.InvoiceDate))
@@ -70,9 +70,9 @@ ORDER BY YEAR(inv.InvoiceDate),MONTH(inv.InvoiceDate);
 */
 
 SELECT 
-YEAR(inv.InvoiceDate) as 'Год продажи',
-MONTH(inv.InvoiceDate) as 'Месяц продажи',
-SUM(invl.UnitPrice*invl.Quantity) as 'Общая сумма'
+YEAR(inv.InvoiceDate) as 'YEAR',
+MONTH(inv.InvoiceDate) as 'MONTH',
+SUM(invl.UnitPrice*invl.Quantity) as 'Total amount'
 FROM Sales.Invoices inv
 INNER JOIN Sales.InvoiceLines invl ON invl.InvoiceID=inv.InvoiceID
 GROUP BY YEAR(inv.InvoiceDate),MONTH(inv.InvoiceDate)
@@ -97,12 +97,12 @@ ORDER BY YEAR(inv.InvoiceDate),MONTH(inv.InvoiceDate);
 */
 
 SELECT 
-YEAR(inv.InvoiceDate) as 'Год продажи',
-MONTH(inv.InvoiceDate) as 'Месяц продажи', 
-wst.StockItemName as 'Наименование товара', 
-SUM(invl.UnitPrice*invl.Quantity) as 'Сумма продаж', 
-MIN(inv.InvoiceDate) as 'Дата первой продажи', 
-sum (invl.Quantity) as 'Количество проданного'
+YEAR(inv.InvoiceDate) as 'YEAR',
+MONTH(inv.InvoiceDate) as 'MONTH', 
+wst.StockItemName as 'STOCK ITEM NAME', 
+SUM(invl.UnitPrice*invl.Quantity) as 'TOTAL AMOUNT', 
+MIN(inv.InvoiceDate) as 'DATE OF FIRST SALE', 
+sum (invl.Quantity) as 'QUANTITY'
 FROM Sales.Invoices inv
 INNER JOIN Sales.InvoiceLines invl ON invl.InvoiceID=inv.InvoiceID
 INNER JOIN Warehouse.StockItems wst ON wst.StockItemID = Invl.StockItemID
