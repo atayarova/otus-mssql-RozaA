@@ -91,7 +91,6 @@ UNPIVOT(AddressLine FOR ColumnName IN (
 			PostalAddressLine2
 			)) AS upvt;
 
-
 /*
 3. В таблице стран (Application.Countries) есть поля с цифровым кодом страны и с буквенным.
 Сделайте выборку ИД страны, названия и ее кода так, 
@@ -107,7 +106,7 @@ CountryId | CountryName | Code
 3         | Albania     | 8
 ----------+-------------+-------
 */
-
+-- 1 SUBQUERIES
 SELECT CountryID, CountryName, Code
 FROM (
 	SELECT CountryID, CountryName, cast(IsoAlpha3Code AS NVARCHAR(20)) AS IsoAlpha3Code, cast(IsoNumericCode AS NVARCHAR(20)) AS IsoNumericCode
@@ -117,13 +116,26 @@ UNPIVOT(Code FOR ColumnName IN (
 			IsoAlpha3Code,
 			IsoNumericCode
 			)) AS upvt;
+-- 2 CTE 	
+;WITH ccte
+AS (
+	SELECT CountryID, CountryName, cast(IsoAlpha3Code AS VARCHAR(20)) Code1, cast(IsoNumericCode AS VARCHAR(20)) Code2
+	FROM Application.Countries
+	)
+SELECT CountryID, CountryName, Code
+FROM ccte
+unpivot(Code FOR Number IN (
+			Code1,
+			Code2
+			)) AS upvt;
+
 
 
 /*
 4. Выберите по каждому клиенту два самых дорогих товара, которые он покупал.
 В результатах должно быть ид клиета, его название, ид товара, цена, дата покупки.
 */
-
+-- CROSS APPLY
 SELECT c.CustomerID, c.CustomerName, caSales.StockItemID, caSales.UnitPrice, caSales.InvoiceDate
 FROM Sales.Customers AS c
 CROSS APPLY (
@@ -134,6 +146,7 @@ CROSS APPLY (
 	ORDER BY l.UnitPrice DESC
 	) AS caSales;
 
+--OUTER APPLY 
 
 SELECT c.CustomerID, c.CustomerName, caSales.StockItemID, caSales.UnitPrice, caSales.InvoiceDate
 FROM Sales.Customers AS c
