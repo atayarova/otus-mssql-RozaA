@@ -168,19 +168,17 @@ AS (
 	INNER JOIN Sales.Customers c ON c.CustomerID = i.CustomerID
 	GROUP BY p.PersonID, p.FullName, c.CustomerID, c.CustomerName, i.InvoiceDate, i.InvoiceID
 	)
+
 SELECT employee_id, employee_name, CustomerID, CustomerName, InvoiceID, InvoiceDate, tax
 FROM cte
 WHERE last_customer = 1
-
 
 /*
 6. Выберите по каждому клиенту два самых дорогих товара, которые он покупал.
 В результатах должно быть ид клиета, его название, ид товара, цена, дата покупки.
 */
 -- window_functions
-;
-
-WITH cte
+;WITH cte
 AS (
 	SELECT inv.CustomerID, cus.CustomerName, stc.StockItemID, stc.UnitPrice, inv.InvoiceDate, ROW_NUMBER() OVER (
 			PARTITION BY inv.CustomerID ORDER BY stc.UnitPrice DESC, invl.InvoiceID DESC
