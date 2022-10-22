@@ -78,7 +78,7 @@ FROM sales.Invoices i
 INNER JOIN Sales.Customers c ON c.CustomerID = i.CustomerID
 INNER JOIN Sales.InvoiceLines il ON il.InvoiceID = i.InvoiceID
 where i.InvoiceDate>='20150101'
-ORDER BY i.InvoiceDate
+ORDER BY i.InvoiceDate, c.CustomerName;
 --set statistics time, io off
 
 --Время синтаксического анализа и компиляции SQL Server: 
