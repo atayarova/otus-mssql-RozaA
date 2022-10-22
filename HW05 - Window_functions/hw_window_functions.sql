@@ -37,8 +37,8 @@ USE WideWorldImporters
 Продажи можно взять из таблицы Invoices.
 Нарастающий итог должен быть без оконной функции.
 */
-set statistics time, io on
-go
+--set statistics time, io on
+--go
 SELECT i.InvoiceID, c.CustomerName, i.InvoiceDate, (il.UnitPrice * il.Quantity) AS InvoiceSum, (
 		SELECT TOP (1) sum(ll.UnitPrice * ll.Quantity)
 		FROM Sales.Invoices AS ii
@@ -51,57 +51,43 @@ JOIN Sales.InvoiceLines AS il ON i.InvoiceID = il.InvoiceID
 JOIN Sales.Customers AS c ON i.CustomerID = c.CustomerID
 WHERE i.InvoiceDate >= '20150101'
 ORDER BY i.InvoiceDate, c.CustomerName;
-set statistics time, io off
+--set statistics time, io off
+
+--Время синтаксического анализа и компиляции SQL Server: 
+-- время ЦП = 109 мс, истекшее время = 129 мс.
+
+--  Время работы SQL Server:
+--   Время ЦП = 85266 мс, затраченное время = 87337 мс.
+
+--Время выполнения: 2022-10-22T14:32:07.1643744+06:00
+
+
 /*
 2. Сделайте расчет суммы нарастающим итогом в предыдущем запросе с помощью оконной функции.
    Сравните производительность запросов 1 и 2 с помощью set statistics time, io on
 */
-set statistics time, io on
-go
+--set statistics time, io on
+--go
 SELECT 
 i.InvoiceID, 
 c.CustomerName,
 i.InvoiceDate, 
-sum(il.UnitPrice * il.Quantity) AS InvoiceSum,
-sum(il.UnitPrice * il.Quantity)  OVER (PARTITION BY  YEAR(i.InvoiceDate), MONTH(i.InvoiceDate)) AS CumulativeSum
+il.UnitPrice * il.Quantity AS InvoiceSum,
+sum(il.UnitPrice * il.Quantity)  OVER (PARTITION BY YEAR(i.InvoiceDate), MONTH(i.InvoiceDate)) AS CumulativeSum
 FROM sales.Invoices i
 INNER JOIN Sales.Customers c ON c.CustomerID = i.CustomerID
 INNER JOIN Sales.InvoiceLines il ON il.InvoiceID = i.InvoiceID
 where i.InvoiceDate>='20150101'
-GROUP BY i.InvoiceID, c.CustomerName, i.InvoiceDate, il.UnitPrice, il.Quantity
 ORDER BY i.InvoiceDate
+--set statistics time, io off
 
-set statistics time, io off
---Сравнение 1 и 2 задания-----------------------------------------------------------------------------------------------
 --Время синтаксического анализа и компиляции SQL Server: 
--- время ЦП = 117 мс, истекшее время = 117 мс.
+-- время ЦП = 78 мс, истекшее время = 88 мс.
+--  Время работы SQL Server:
+--   Время ЦП = 375 мс, затраченное время = 1889 мс.
 
---(затронуто строк: 101356)
---Таблица "InvoiceLines". Число просмотров 888, логических чтений 0, физических чтений 0, упреждающих чтений 0, lob логических чтений 322, lob физических чтений 0, lob упреждающих чтений 0.
---Таблица "InvoiceLines". Считано сегментов 444, пропущено 0.
---Таблица "Worktable". Число просмотров 443, логических чтений 184145, физических чтений 0, упреждающих чтений 0, lob логических чтений 0, lob физических чтений 0, lob упреждающих чтений 0.
---Таблица "Workfile". Число просмотров 0, логических чтений 0, физических чтений 0, упреждающих чтений 0, lob логических чтений 0, lob физических чтений 0, lob упреждающих чтений 0.
---Таблица "Invoices". Число просмотров 2, логических чтений 22800, физических чтений 0, упреждающих чтений 0, lob логических чтений 0, lob физических чтений 0, lob упреждающих чтений 0.
---Таблица "Worktable". Число просмотров 0, логических чтений 0, физических чтений 0, упреждающих чтений 0, lob логических чтений 0, lob физических чтений 0, lob упреждающих чтений 0.
---Таблица "Customers". Число просмотров 1, логических чтений 40, физических чтений 0, упреждающих чтений 0, lob логических чтений 0, lob физических чтений 0, lob упреждающих чтений 0.
+--Время выполнения: 2022-10-22T14:34:39.1594291+06:00
 
--- Время работы SQL Server:
---   Время ЦП = 91500 мс, затраченное время = 94097 мс.
---Время синтаксического анализа и компиляции SQL Server: 
--- время ЦП = 62 мс, истекшее время = 66 мс.
-
---(затронуто строк: 100243)
---Таблица "InvoiceLines". Число просмотров 2, логических чтений 0, физических чтений 0, упреждающих чтений 0, lob логических чтений 161, lob физических чтений 0, lob упреждающих чтений 0.
---Таблица "InvoiceLines". Считано сегментов 1, пропущено 0.
---Таблица "Worktable". Число просмотров 0, логических чтений 0, физических чтений 0, упреждающих чтений 0, lob логических чтений 0, lob физических чтений 0, lob упреждающих чтений 0.
---Таблица "Invoices". Число просмотров 1, логических чтений 11400, физических чтений 0, упреждающих чтений 0, lob логических чтений 0, lob физических чтений 0, lob упреждающих чтений 0.
---Таблица "Worktable". Число просмотров 0, логических чтений 0, физических чтений 0, упреждающих чтений 0, lob логических чтений 0, lob физических чтений 0, lob упреждающих чтений 0.
---Таблица "Customers". Число просмотров 1, логических чтений 40, физических чтений 0, упреждающих чтений 0, lob логических чтений 0, lob физических чтений 0, lob упреждающих чтений 0.
-
--- Время работы SQL Server:
---   Время ЦП = 656 мс, затраченное время = 2231 мс.
-
---Время выполнения: 2022-10-20T23:12:08.0516321+06:00
 
 
 /*
