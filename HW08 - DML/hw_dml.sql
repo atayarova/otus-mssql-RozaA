@@ -98,7 +98,11 @@ OUTPUT deleted.*, $ACTION, inserted.*;
 5. Напишите запрос, который выгрузит данные через bcp out и загрузить через bulk insert
 */
 --bcp out
+-- вариант выгрузки таблицы
 exec master..xp_cmdshell 'bcp "[WideWorldImporters].Sales.[Customerstest1]" out  "D:\Rosedocs\DATA\1.txt" -T -w -t";" -S ROZA\MSSQLSERVER01'
+--вариант выгрузки результата запроса
+exec master.dbo.xp_cmdshell 'bcp "SELECT FullName, PreferredName FROM WideWorldImporters.Application.People ORDER BY FullName" queryout D:\Rosedocs\DATA\People3.txt -w -t";" -T -S ROZA\MSSQLSERVER01'
+
 --bulk insert
 
 CREATE TABLE [Sales].[Customers_bulkdemo] ([CustomerID] [int] NOT NULL, [CustomerName] [nvarchar](100) NOT NULL, [BillToCustomerID] [int] NOT NULL, [AccountOpenedDate] [date] NOT NULL)
