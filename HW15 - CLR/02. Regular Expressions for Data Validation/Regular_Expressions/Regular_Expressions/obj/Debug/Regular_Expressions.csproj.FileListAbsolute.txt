@@ -1,6 +1,0 @@
-D:\Rosedocs\OTUS\HW_CLR\Regular Expressions for Data Validation\Regular_Expressions\Regular_Expressions\bin\Debug\Regular_Expressions.dll
-D:\Rosedocs\OTUS\HW_CLR\Regular Expressions for Data Validation\Regular_Expressions\Regular_Expressions\bin\Debug\Regular_Expressions.pdb
-D:\Rosedocs\OTUS\HW_CLR\Regular Expressions for Data Validation\Regular_Expressions\Regular_Expressions\obj\Debug\Regular_Expressions.csproj.AssemblyReference.cache
-D:\Rosedocs\OTUS\HW_CLR\Regular Expressions for Data Validation\Regular_Expressions\Regular_Expressions\obj\Debug\Regular_Expressions.csproj.CoreCompileInputs.cache
-D:\Rosedocs\OTUS\HW_CLR\Regular Expressions for Data Validation\Regular_Expressions\Regular_Expressions\obj\Debug\Regular_Expressions.dll
-D:\Rosedocs\OTUS\HW_CLR\Regular Expressions for Data Validation\Regular_Expressions\Regular_Expressions\obj\Debug\Regular_Expressions.pdb
