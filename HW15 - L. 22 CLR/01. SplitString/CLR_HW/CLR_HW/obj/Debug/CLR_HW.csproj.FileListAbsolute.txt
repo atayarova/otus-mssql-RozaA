@@ -1,0 +1,6 @@
+D:\Rosedocs\OTUS\HW_CLR\CLR_HW\CLR_HW\bin\Debug\CLR_HW.dll
+D:\Rosedocs\OTUS\HW_CLR\CLR_HW\CLR_HW\bin\Debug\CLR_HW.pdb
+D:\Rosedocs\OTUS\HW_CLR\CLR_HW\CLR_HW\obj\Debug\CLR_HW.csproj.AssemblyReference.cache
+D:\Rosedocs\OTUS\HW_CLR\CLR_HW\CLR_HW\obj\Debug\CLR_HW.csproj.CoreCompileInputs.cache
+D:\Rosedocs\OTUS\HW_CLR\CLR_HW\CLR_HW\obj\Debug\CLR_HW.dll
+D:\Rosedocs\OTUS\HW_CLR\CLR_HW\CLR_HW\obj\Debug\CLR_HW.pdb
