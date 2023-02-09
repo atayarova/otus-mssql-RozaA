@@ -6,28 +6,19 @@
     <DataSource Name="Graduation_Project_Reports">
       <DataSourceReference>Graduation_Project Reports</DataSourceReference>
       <rd:SecurityType>None</rd:SecurityType>
-      <rd:DataSourceID>0c1fa915-8d56-49f9-a860-6d01a6d78b43</rd:DataSourceID>
+      <rd:DataSourceID>0ef21e00-53f5-4529-be98-eb57d2e4a17b</rd:DataSourceID>
     </DataSource>
   </DataSources>
   <DataSets>
     <DataSet Name="DataSet1">
       <Query>
         <DataSourceName>Graduation_Project_Reports</DataSourceName>
-        <QueryParameters>
-          <QueryParameter Name="@datefrom">
-            <Value>=Parameters!datefrom.Value</Value>
-          </QueryParameter>
-          <QueryParameter Name="@dateto">
-            <Value>=Parameters!dateto.Value</Value>
-          </QueryParameter>
-        </QueryParameters>
         <CommandText>SELECT  t.TaskNumber, t.Title, u.UserName, tc.CategoryName, tsc.SubcategoryName
 FROM Tasks t 
 INNER JOIN dbo.TasksCategory tc ON tc.ID = t.CategoryID
 INNER JOIN dbo.TaskSubCategory tsc ON tsc.CategoryID = tc.ID
 INNER JOIN dbo.TaskPosition tp ON tp.SubCategoryID = tsc.ID
 INNER JOIN dbo.Users u ON u.ID = t.SpesialistID
-WHERE t.DateClosing BETWEEN @datefrom AND @dateto
 GROUP BY t.TaskNumber, t.Title, u.UserName, tc.CategoryName, tsc.SubcategoryName</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
@@ -66,7 +57,7 @@ GROUP BY t.TaskNumber, t.Title, u.UserName, tc.CategoryName, tsc.SubcategoryName
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Tasks</Value>
+                    <Value>ReportTask</Value>
                     <Style>
                       <FontFamily>Segoe UI Light</FontFamily>
                       <FontSize>24pt</FontSize>
@@ -555,36 +546,14 @@ GROUP BY t.TaskNumber, t.Title, u.UserName, tc.CategoryName, tsc.SubcategoryName
       </Page>
     </ReportSection>
   </ReportSections>
-  <ReportParameters>
-    <ReportParameter Name="datefrom">
-      <DataType>String</DataType>
-      <Prompt>datefrom</Prompt>
-    </ReportParameter>
-    <ReportParameter Name="dateto">
-      <DataType>String</DataType>
-      <Prompt>dateto</Prompt>
-    </ReportParameter>
-  </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
-      <NumberOfColumns>2</NumberOfColumns>
-      <NumberOfRows>1</NumberOfRows>
-      <CellDefinitions>
-        <CellDefinition>
-          <ColumnIndex>0</ColumnIndex>
-          <RowIndex>0</RowIndex>
-          <ParameterName>datefrom</ParameterName>
-        </CellDefinition>
-        <CellDefinition>
-          <ColumnIndex>1</ColumnIndex>
-          <RowIndex>0</RowIndex>
-          <ParameterName>dateto</ParameterName>
-        </CellDefinition>
-      </CellDefinitions>
+      <NumberOfColumns>4</NumberOfColumns>
+      <NumberOfRows>2</NumberOfRows>
     </GridLayoutDefinition>
   </ReportParametersLayout>
   <Language>en-US</Language>
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Invalid</rd:ReportUnitType>
-  <rd:ReportID>80b4f85e-063e-4751-9921-b2c926ef89d4</rd:ReportID>
+  <rd:ReportID>b24c74b9-4225-490c-aec6-d5b51cb1b293</rd:ReportID>
 </Report>

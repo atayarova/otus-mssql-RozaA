@@ -55,7 +55,7 @@
     <DataSource Include="Graduation_Project Reports.rds" />
   </ItemGroup>
   <ItemGroup>
-    <Report Include="Tasks.rdl" />
+    <Report Include="ReportTask.rdl" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Reporting Services\Microsoft.ReportingServices.MSBuilder.targets" />
 </Project>
