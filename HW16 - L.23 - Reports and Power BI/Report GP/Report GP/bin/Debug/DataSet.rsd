@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SharedDataSet xmlns="http://schemas.microsoft.com/sqlserver/reporting/2010/01/shareddatasetdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
+  <DataSet Name="DataSet1">
+    <Query>
+      <DataSourceReference>Graduation_Project Reports</DataSourceReference>
+      <CommandText>DECLARE @datefrom DATE, @dateto date; SELECT t .TaskNumber, t .Title, u.UserName, tc.CategoryName, tsc.SubcategoryName, tp.PositionName
+                                                                                      FROM      Tasks t INNER JOIN
+                                                                                                        dbo.TasksCategory tc ON tc.ID = t .CategoryID INNER JOIN
+                                                                                                        dbo.TaskSubCategory tsc ON tsc.CategoryID = tc.ID INNER JOIN
+                                                                                                        dbo.TaskPosition tp ON tp.SubCategoryID = tsc.ID INNER JOIN
+                                                                                                        dbo.Users u ON u.ID = t .SpesialistID
+                                                                                      WHERE   t .DateClosing BETWEEN @datefrom AND @dateto</CommandText>
+    </Query>
+    <Fields>
+      <Field Name="TaskNumber">
+        <DataField>TaskNumber</DataField>
+        <rd:TypeName>System.String</rd:TypeName>
+      </Field>
+      <Field Name="Title">
+        <DataField>Title</DataField>
+        <rd:TypeName>System.String</rd:TypeName>
+      </Field>
+      <Field Name="UserName">
+        <DataField>UserName</DataField>
+        <rd:TypeName>System.String</rd:TypeName>
+      </Field>
+      <Field Name="CategoryName">
+        <DataField>CategoryName</DataField>
+        <rd:TypeName>System.String</rd:TypeName>
+      </Field>
+      <Field Name="SubcategoryName">
+        <DataField>SubcategoryName</DataField>
+        <rd:TypeName>System.String</rd:TypeName>
+      </Field>
+      <Field Name="PositionName">
+        <DataField>PositionName</DataField>
+        <rd:TypeName>System.String</rd:TypeName>
+      </Field>
+    </Fields>
+  </DataSet>
+</SharedDataSet>
