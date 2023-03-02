@@ -1,25 +1,29 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:df="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition/defaultfontfamily" MustUnderstand="df">
+<Report MustUnderstand="df" xmlns="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner" xmlns:df="http://schemas.microsoft.com/sqlserver/reporting/2016/01/reportdefinition/defaultfontfamily">
   <df:DefaultFontFamily>Segoe UI</df:DefaultFontFamily>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
     <DataSource Name="Graduation_Project_Reports">
       <DataSourceReference>Graduation_Project Reports</DataSourceReference>
       <rd:SecurityType>None</rd:SecurityType>
-      <rd:DataSourceID>0ef21e00-53f5-4529-be98-eb57d2e4a17b</rd:DataSourceID>
+      <rd:DataSourceID>ef391fff-8207-498a-b3a1-5864ac80c674</rd:DataSourceID>
     </DataSource>
   </DataSources>
   <DataSets>
     <DataSet Name="DataSet1">
       <Query>
         <DataSourceName>Graduation_Project_Reports</DataSourceName>
-        <CommandText>SELECT  t.TaskNumber, t.Title, u.UserName, tc.CategoryName, tsc.SubcategoryName
-FROM Tasks t 
-INNER JOIN dbo.TasksCategory tc ON tc.ID = t.CategoryID
-INNER JOIN dbo.TaskSubCategory tsc ON tsc.CategoryID = tc.ID
-INNER JOIN dbo.TaskPosition tp ON tp.SubCategoryID = tsc.ID
-INNER JOIN dbo.Users u ON u.ID = t.SpesialistID
-GROUP BY t.TaskNumber, t.Title, u.UserName, tc.CategoryName, tsc.SubcategoryName</CommandText>
+        <QueryParameters>
+          <QueryParameter Name="@datefrom">
+            <Value>=Parameters!datefrom.Value</Value>
+          </QueryParameter>
+          <QueryParameter Name="@dateto">
+            <Value>=Parameters!dateto.Value</Value>
+          </QueryParameter>
+        </QueryParameters>
+        <CommandText>Exec [dbo].[Closed_tasks]
+@datefrom,
+@dateto</CommandText>
         <rd:UseGenericDesigner>true</rd:UseGenericDesigner>
       </Query>
       <Fields>
@@ -39,9 +43,9 @@ GROUP BY t.TaskNumber, t.Title, u.UserName, tc.CategoryName, tsc.SubcategoryName
           <DataField>CategoryName</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="SubcategoryName">
-          <DataField>SubcategoryName</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+        <Field Name="DateClosing">
+          <DataField>DateClosing</DataField>
+          <rd:TypeName>System.DateTime</rd:TypeName>
         </Field>
       </Fields>
     </DataSet>
@@ -57,7 +61,7 @@ GROUP BY t.TaskNumber, t.Title, u.UserName, tc.CategoryName, tsc.SubcategoryName
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>ReportTask</Value>
+                    <Value>Закрытые заявки</Value>
                     <Style>
                       <FontFamily>Segoe UI Light</FontFamily>
                       <FontSize>24pt</FontSize>
@@ -70,6 +74,7 @@ GROUP BY t.TaskNumber, t.Title, u.UserName, tc.CategoryName, tsc.SubcategoryName
             </Paragraphs>
             <rd:DefaultName>textbox1</rd:DefaultName>
             <Height>0.42in</Height>
+            <Width>5in</Width>
             <Style>
               <PaddingLeft>2pt</PaddingLeft>
               <PaddingRight>2pt</PaddingRight>
@@ -87,13 +92,13 @@ GROUP BY t.TaskNumber, t.Title, u.UserName, tc.CategoryName, tsc.SubcategoryName
                   <Width>1in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1in</Width>
+                  <Width>1.16667in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1in</Width>
+                  <Width>2.15833in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1in</Width>
+                  <Width>1.95in</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -109,7 +114,7 @@ GROUP BY t.TaskNumber, t.Title, u.UserName, tc.CategoryName, tsc.SubcategoryName
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Task Number</Value>
+                                  <Value>№ заявки</Value>
                                   <Style>
                                     <FontFamily />
                                     <FontSize>11pt</FontSize>
@@ -122,8 +127,6 @@ GROUP BY t.TaskNumber, t.Title, u.UserName, tc.CategoryName, tsc.SubcategoryName
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>textbox2</rd:DefaultName>
-                          <Height>0.22in</Height>
-                          <Width>1in</Width>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -149,7 +152,7 @@ GROUP BY t.TaskNumber, t.Title, u.UserName, tc.CategoryName, tsc.SubcategoryName
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Title</Value>
+                                  <Value>Заголовок</Value>
                                   <Style>
                                     <FontFamily />
                                     <FontSize>11pt</FontSize>
@@ -162,8 +165,6 @@ GROUP BY t.TaskNumber, t.Title, u.UserName, tc.CategoryName, tsc.SubcategoryName
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>textbox3</rd:DefaultName>
-                          <Height>0.22in</Height>
-                          <Width>1in</Width>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -189,7 +190,7 @@ GROUP BY t.TaskNumber, t.Title, u.UserName, tc.CategoryName, tsc.SubcategoryName
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>User Name</Value>
+                                  <Value>Исполнитель</Value>
                                   <Style>
                                     <FontFamily />
                                     <FontSize>11pt</FontSize>
@@ -202,8 +203,6 @@ GROUP BY t.TaskNumber, t.Title, u.UserName, tc.CategoryName, tsc.SubcategoryName
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>textbox4</rd:DefaultName>
-                          <Height>0.22in</Height>
-                          <Width>1in</Width>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -229,7 +228,7 @@ GROUP BY t.TaskNumber, t.Title, u.UserName, tc.CategoryName, tsc.SubcategoryName
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Category Name</Value>
+                                  <Value>Категория заявки</Value>
                                   <Style>
                                     <FontFamily />
                                     <FontSize>11pt</FontSize>
@@ -242,8 +241,6 @@ GROUP BY t.TaskNumber, t.Title, u.UserName, tc.CategoryName, tsc.SubcategoryName
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>textbox5</rd:DefaultName>
-                          <Height>0.22in</Height>
-                          <Width>1in</Width>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -269,7 +266,7 @@ GROUP BY t.TaskNumber, t.Title, u.UserName, tc.CategoryName, tsc.SubcategoryName
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Subcategory Name</Value>
+                                  <Value>Дата закрытия</Value>
                                   <Style>
                                     <FontFamily />
                                     <FontSize>11pt</FontSize>
@@ -282,8 +279,6 @@ GROUP BY t.TaskNumber, t.Title, u.UserName, tc.CategoryName, tsc.SubcategoryName
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>textbox6</rd:DefaultName>
-                          <Height>0.22in</Height>
-                          <Width>1in</Width>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -325,8 +320,6 @@ GROUP BY t.TaskNumber, t.Title, u.UserName, tc.CategoryName, tsc.SubcategoryName
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>TaskNumber</rd:DefaultName>
-                          <Height>0.21in</Height>
-                          <Width>1in</Width>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -363,8 +356,6 @@ GROUP BY t.TaskNumber, t.Title, u.UserName, tc.CategoryName, tsc.SubcategoryName
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Title</rd:DefaultName>
-                          <Height>0.21in</Height>
-                          <Width>1in</Width>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -401,8 +392,6 @@ GROUP BY t.TaskNumber, t.Title, u.UserName, tc.CategoryName, tsc.SubcategoryName
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>UserName</rd:DefaultName>
-                          <Height>0.21in</Height>
-                          <Width>1in</Width>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -439,8 +428,6 @@ GROUP BY t.TaskNumber, t.Title, u.UserName, tc.CategoryName, tsc.SubcategoryName
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>CategoryName</rd:DefaultName>
-                          <Height>0.21in</Height>
-                          <Width>1in</Width>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -459,14 +446,14 @@ GROUP BY t.TaskNumber, t.Title, u.UserName, tc.CategoryName, tsc.SubcategoryName
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="SubcategoryName">
+                        <Textbox Name="DateClosing">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!SubcategoryName.Value</Value>
+                                  <Value>=Fields!DateClosing.Value</Value>
                                   <Style>
                                     <FontFamily />
                                     <Color>#333333</Color>
@@ -476,9 +463,7 @@ GROUP BY t.TaskNumber, t.Title, u.UserName, tc.CategoryName, tsc.SubcategoryName
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>SubcategoryName</rd:DefaultName>
-                          <Height>0.21in</Height>
-                          <Width>1in</Width>
+                          <rd:DefaultName>DateClosing</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -530,13 +515,16 @@ GROUP BY t.TaskNumber, t.Title, u.UserName, tc.CategoryName, tsc.SubcategoryName
             </TablixRowHierarchy>
             <DataSetName>DataSet1</DataSetName>
             <Top>0.42in</Top>
+            <Height>0.43in</Height>
+            <Width>7.275in</Width>
+            <ZIndex>1</ZIndex>
             <Style />
           </Tablix>
         </ReportItems>
         <Height>0.85in</Height>
         <Style />
       </Body>
-      <Width>5in</Width>
+      <Width>7.275in</Width>
       <Page>
         <LeftMargin>1in</LeftMargin>
         <RightMargin>1in</RightMargin>
@@ -546,14 +534,36 @@ GROUP BY t.TaskNumber, t.Title, u.UserName, tc.CategoryName, tsc.SubcategoryName
       </Page>
     </ReportSection>
   </ReportSections>
+  <ReportParameters>
+    <ReportParameter Name="datefrom">
+      <DataType>DateTime</DataType>
+      <Prompt>Дата С</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="dateto">
+      <DataType>DateTime</DataType>
+      <Prompt>Дата По</Prompt>
+    </ReportParameter>
+  </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
-      <NumberOfColumns>4</NumberOfColumns>
-      <NumberOfRows>2</NumberOfRows>
+      <NumberOfColumns>2</NumberOfColumns>
+      <NumberOfRows>1</NumberOfRows>
+      <CellDefinitions>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>0</RowIndex>
+          <ParameterName>datefrom</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>0</RowIndex>
+          <ParameterName>dateto</ParameterName>
+        </CellDefinition>
+      </CellDefinitions>
     </GridLayoutDefinition>
   </ReportParametersLayout>
   <Language>en-US</Language>
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
-  <rd:ReportUnitType>Invalid</rd:ReportUnitType>
-  <rd:ReportID>b24c74b9-4225-490c-aec6-d5b51cb1b293</rd:ReportID>
+  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportID>7a19cb97-d2f0-4f8a-a65d-3f5837573081</rd:ReportID>
 </Report>
